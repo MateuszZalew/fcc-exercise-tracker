@@ -27,6 +27,24 @@ app
     users.push(newUser);
   });
 
+app.post("/api/users/:id/exercises", (req, res) => {
+  const { description, duration } = req.body;
+  let { date } = req.body;
+  const { id } = req.params;
+  if (!date) {
+    date = new Date().toDateString();
+  }
+  const user = users.find((user) => user._id === id);
+  const newExercise = {
+    ...user,
+    description,
+    duration: parseInt(duration),
+    date: new Date(date).toDateString(),
+  };
+  res.json(newExercise);
+  exercises.push(newExercise);
+});
+
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
